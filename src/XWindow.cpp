@@ -53,7 +53,7 @@ XWindow::~XWindow()
 
 int XWindow::IsOpened() const
 {
-    return glfwWindowShouldClose(RawWindow);
+    return glfwWindowShouldClose(RawWindow) ? 0 : 1;
 }
 
 void XWindow::SetTitle(const std::string InTitle)

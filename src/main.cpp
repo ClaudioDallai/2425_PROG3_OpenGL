@@ -19,7 +19,7 @@ int main() {
 
 	// Game Loop. 
 	// Valido finchè il contesto della finestra non viene chiuso esplicitamente.
-	while (!win.IsOpened())
+	while (win.IsOpened())
 	{
 		// Prendo il DeltaTime dalla nostra finestra.
 		float DeltaTime = win.GetDeltaTime();

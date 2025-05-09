@@ -3,6 +3,8 @@
 #include <GLFW/glfw3.h>
 #include <stdexcept>
 
+#pragma region Special_Member_Functions
+
 XWindow::XWindow(int InWidth, int InHeight, const std::string InTitle)
     : Width(InWidth), Height(InHeight), Title(InTitle)
 { 
@@ -45,6 +47,9 @@ XWindow::~XWindow()
     glfwDestroyWindow(RawWindow);
 }
 
+#pragma endregion Special_Member_Functions
+
+#pragma region Window_Utility
 
 int XWindow::IsOpened() const
 {
@@ -87,3 +92,5 @@ void XWindow::SetVSync(bool InEnabled)
         glfwSwapInterval(1);
     }
 }
+
+#pragma endregion Window_Utility

@@ -14,14 +14,14 @@ int main() {
 	float TitleUpdateMaxTime = 1.f;
 	float TitleUpdateElapsed = 0.f;
 
-	// Disattiva VSYNC, ovvero nessun intervallo per il Present-Operation tra i buffer.
+	// Disattiva VSync, ovvero nessun intervallo per il Present-Operation tra i buffer.
 	// win.SetVSync(false);
 
 	// Game Loop. 
 	// Valido finchè il contesto della finestra non viene chiuso esplicitamente.
 	while (!win.IsOpened())
 	{
-		// Prendo il DeltaTime dalla finestra.
+		// Prendo il DeltaTime dalla nostra finestra.
 		float DeltaTime = win.GetDeltaTime();
 
 		// Ogni MaxTime specificato attraverso un contatore aggiorno il titolo della finestra.
@@ -44,6 +44,7 @@ int main() {
 			TitleUpdateElapsed -= TitleUpdateMaxTime;
 		}
 
+		// Aggiornamento della finestra. Questo Update include anche le funzioni per Poll e SwapBuffer.
 		win.Update();
 	}
 

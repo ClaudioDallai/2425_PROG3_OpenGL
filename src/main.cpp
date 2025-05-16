@@ -3,6 +3,9 @@
 #include <iostream>
 #include <format>
 #include "XWindow.h"
+#include "Ex01TriangleDraw.h"
+#include "Ex02QuadDraw.h"
+#include "Ex03QuadIndexDraw.h"
 
 int main() {
 	std::cout << "It' Working" << std::endl;
@@ -16,6 +19,11 @@ int main() {
 
 	// Disattiva VSync, ovvero nessun intervallo per il Present-Operation tra i buffer.
 	// win.SetVSync(false);
+
+	// Esercizi.
+	//Ex01TriangleDraw Scene;
+	//Ex02QuadDraw Scene;
+	Ex03QuadIndexDraw Scene;
 
 	// Game Loop. 
 	// Valido finchè il contesto della finestra non viene chiuso esplicitamente.
@@ -43,6 +51,8 @@ int main() {
 			// Garantiamo quindi ogni MaxTime l'aggiornamento.
 			TitleUpdateElapsed -= TitleUpdateMaxTime;
 		}
+
+		Scene.Update(DeltaTime);
 
 		// Aggiornamento della finestra. Questo Update include anche le funzioni per Poll e SwapBuffer.
 		win.Update();

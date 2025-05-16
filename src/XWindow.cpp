@@ -6,7 +6,7 @@
 #pragma region Special_Member_Functions
 
 XWindow::XWindow(int InWidth, int InHeight, const std::string InTitle)
-    : Width(InWidth), Height(InHeight), Title(InTitle), DeltaTime(0.f)
+    : Width(InWidth), Height(InHeight), Title(InTitle), DeltaTime(0.f), RawWindow(nullptr)
 { 
 
     // Controllo che glfw sia inizializzato.

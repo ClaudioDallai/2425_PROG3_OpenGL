@@ -4,57 +4,67 @@
 #include <iostream>
 #include <vector>
 
-// Funzione per leggere file. Dovremmo leggere i file contenenti gli shader.
+// Funzione per leggere file. Dovremmo leggere i file contenenti gli shader grezzi.
 static std::string ReadFile(const std::string& InPath)
 {
     // Ci serve caricare tutto il file in memoria come stringa, poichè dobbiamo compilarlo.
     // Lo shader ha bisogno della compilazione per essere usato.
     // Poichè dovremmo leggere tutto, per non dover concatenare i buffer di appoggio con la stringa da costruire,
     // dovremmo sapere quanto è grande il file. Potremmo allocare totalmente il buffer e leggere tutto insieme, un "ReadAll".
-    // Possoiamo aprire il file, portare alla fine il cursore (apertura ate ovvero at the end), 
-    // e posso chiedere allo stream quanto il cursore è stato scorso. Quello ``e il filesize.
+    // Possiamo aprire il file, portare alla fine il cursore (apertura ate ovvero at the end), 
+    // e posso chiedere allo stream quanto il cursore è stato scorso. Quello è il filesize.
 
     std::ifstream InputStream(InPath, std::ios::ate);
-    size_t FileSize = InputStream.tellg();
+    size_t FileSize = InputStream.tellg(); // Ritorna la posizione del cursore in Byte.
 
     std::string Text;
     Text.resize(FileSize);
 
     // Dopo aver saputo quanto è grande il file per allocare il buffer, risposto il cursore all'inizio (beg ovvero begin).
-    // Proseguo a leggere il file partendo dal primo byte (&Text[0]).
-    InputStream.seekg(0, std::ios::beg);
+    // Proseguo a leggere il file partendo dal primo byte (&Text[0]), fino a FileSize bytes.
+    InputStream.seekg(0, std::ios::beg); // Sposta il cursore. I parametri sono: offset a partire da dove indicato (dall'inizio in questo caso).
     InputStream.read(&Text[0], FileSize);
 
     InputStream.close();
     return Text;
 }
 
-// Devo creare lo shader. Devo distinguere se è di tipo frag o vert.
+// Devo creare lo shader. Devo distinguere se è di tipo Frag (agisce e ricostruisce i vertici) o Vert (agisce e colora i pixel).
 static GLuint CreateShader(const std::string& InPath, GLuint InShaderType)
 {
     std::string Text = ReadFile(InPath);
-    const char* ShaderSource = Text.c_str(); // Puntatore al sorgente dello shader.
+    const char* ShaderSource = Text.c_str(); // Puntatore al sorgente dello shader letto precedentemente (le API OpenGL sono C, per questo serve char*).
 
-    // Creiamo lo Shader e carichiamo i sorgenti sulla GPU.
-    GLuint ShaderId = glCreateShader(InShaderType);
-    glShaderSource(ShaderId, 1, &ShaderSource, NULL);
+    // Iniziamo a dialogare con la GPU.
+    // Creiamo lo Shader del tipo specificato e carichiamo i sorgenti sulla GPU.
+    GLuint ShaderId = glCreateShader(InShaderType); // Ritorna l'ID della risorsa shader creata.
 
-    // Compiliamo.
+    // Leghiamo allo shader il sorgente indicando: 
+    // il suo id, quanti shader stiamo compilando, un riferimento al sorgente char*, lunghezza del sorgente (con NULL prende tutto).
+    glShaderSource(ShaderId, 1, &ShaderSource, NULL); 
+
+    // Compiliamo lo shader indicando l'id.
     glCompileShader(ShaderId);
 
-    // Essenbdo compilato su GPU, se fallisce non vedremo niente. Dobbiamo chiedere alla GPU se il tutto è riuscito.
+    // Essendo compilato su GPU, se fallisce non vedremo niente. Dobbiamo chiedere alla GPU se il tutto è riuscito.
     // Sfruttiamo API di richiesta informazioni.
     GLint Success;
-    glGetShaderiv(ShaderId, GL_COMPILE_STATUS, &Success);
+    glGetShaderiv(ShaderId, GL_COMPILE_STATUS, &Success); // Chiediamo lo status della compilazione.
 
-    // 0 -> falso; 1 -> true.
+    // 0 -> false; 1 -> true.
     if (!Success)
     {
-        GLint MaxLogLength; // massimo log che la GPU può scrivere.
-        glGetShaderiv(ShaderId, GL_INFO_LOG_LENGTH, &MaxLogLength);
+        // Chiediamo quali errori di compilazione sono avvenuti. 
+        // Stampandoli a schermo possiamo risolverli.
         
-        // Otteniamo un puntatore di char dal vettore MODIFICABILE, 
-        // così possiamo scrivere i mess di errorre dall'inizio del puntatore fino alla fine della grabndezza MaxLogLength.
+        // Chiediamo alla GPU quanto è grosso il più grande LOG scrivibile, così da evitare successivi problemi in lettura.
+        // Salviamo questo dato nel buffer appena creato. 
+        GLint MaxLogLength; 
+        glGetShaderiv(ShaderId, GL_INFO_LOG_LENGTH, &MaxLogLength); 
+        
+        // Otteniamo un puntatore di char dal vettore MODIFICABILE, così ci possiamo scrivere dentro. Il char* sarebbe costante e non potremmo scriverci dopo. 
+        // Possiamo scrivere i mess di errore dall'inizio del puntatore fino alla fine della grandezza MaxLogLength.
+        // Essendo il vettore sequenziale, possiamo scrivere dall'inizio alla fine senza problemi.
         std::vector<GLchar> InfoLog(MaxLogLength);
         glGetShaderInfoLog(ShaderId, MaxLogLength, NULL, InfoLog.data());
 
@@ -64,6 +74,7 @@ static GLuint CreateShader(const std::string& InPath, GLuint InShaderType)
         throw std::runtime_error(LogStr);
     }
 
+    // Se tutto è ok invece, ritorniamo l'identificativo dello shader creato.
     return ShaderId;
 }
 

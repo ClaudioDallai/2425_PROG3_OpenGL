@@ -1,6 +1,5 @@
 #include <glad/glad.h>
 
-
 class Ex01TriangleDraw
 {
 public:
@@ -10,7 +9,7 @@ public:
 
 private:
 
-    // Il ProgramId diventa un campo della classe così da poterlo distruggere quando usciamo dal contesto.
+    // Parametri di classe. Li salviamo in modo da poterli riutilizzare per successive chiamate API ad OpenGL.
     GLuint ProgramId;
     GLuint Vao;
     GLuint Vbo;

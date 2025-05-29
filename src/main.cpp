@@ -6,6 +6,8 @@
 #include "Ex01TriangleDraw.h"
 #include "Ex02QuadDraw.h"
 #include "Ex03QuadIndexDraw.h"
+#include "Ex04QuadColorDraw.h"
+
 
 int main() {
 	std::cout << "It' Working" << std::endl;
@@ -21,9 +23,10 @@ int main() {
 	// win.SetVSync(false);
 
 	// Esercizi OpenGL.
-	Ex01TriangleDraw Scene;
+	// Ex01TriangleDraw Scene;
 	// Ex02QuadDraw Scene;
-	// Ex03QuadIndexDraw Scene;
+	Ex03QuadIndexDraw Scene;
+	// Ex04QuadColorDraw Scene;
 
 	// Game Loop. 
 	// Valido finchè il contesto della finestra non viene chiuso esplicitamente.

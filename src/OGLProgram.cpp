@@ -29,6 +29,11 @@ void OGLProgram::Bind()
     glUseProgram(ProgramId);
 }
 
+GLuint OGLProgram::GetProgramID()
+{
+    return ProgramId;
+}
+
 static std::string ReadFile(const std::string& InPath)
 {
     std::ifstream InputStream(InPath, std::ios::ate);

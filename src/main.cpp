@@ -25,8 +25,8 @@ int main() {
 	// Esercizi OpenGL.
 	// Ex01TriangleDraw Scene;
 	// Ex02QuadDraw Scene;
-	Ex03QuadIndexDraw Scene;
-	// Ex04QuadColorDraw Scene;
+	// Ex03QuadIndexDraw Scene;
+	Ex04QuadColorDraw Scene;
 
 	// Game Loop. 
 	// Valido finchè il contesto della finestra non viene chiuso esplicitamente.

@@ -106,3 +106,14 @@ static GLuint CreateProgram(GLuint VertexShaderId, GLuint FragmentShaderId)
 
     return ProgramId;
 }
+
+
+void OGLProgram::SetUniform(const std::string& InName, float InValue)
+{
+    glUniform1f(glGetUniformLocation(ProgramId, InName.c_str()), InValue);
+}
+
+void OGLProgram::SetUniform(const std::string& InName, const Color& InValue)
+{
+    glUniform4fv(glGetUniformLocation(ProgramId, InName.c_str()), 1, reinterpret_cast<const GLfloat*> (&InValue));
+}

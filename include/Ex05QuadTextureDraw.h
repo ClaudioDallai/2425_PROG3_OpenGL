@@ -1,6 +1,7 @@
 #include <glad/glad.h>
 
 class OGLProgram;
+class OGLTexture;
 
 class Ex05QuadTextureDraw
 {
@@ -17,6 +18,6 @@ private:
 
     OGLProgram* Program;
 
-    GLuint SmileTextureId;
-    GLuint BoxTextureId;
+    OGLTexture* SmileTexture;
+    OGLTexture* BoxTexture;
 };

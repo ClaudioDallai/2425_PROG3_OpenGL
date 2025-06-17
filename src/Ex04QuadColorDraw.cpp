@@ -4,20 +4,13 @@
 #include <iostream>
 #include <vector>
 #include "OGLProgram.h"
+#include "XCommon.h"
 
 // Vogliamo in questo esercizio far in modo di riuscire ad immettere un colore diverso per ogni vertice.
 
 // Vogliamo anche poter cambiare la dimensione del quad, ovvero scalare i vertici senza cambiare buffer e ricaricarlo.
 // Sulla stessa mesh fissa quindi, con la GPU nel vertex shader, possiamo agire sui vertici. È una uniform creata nel .vert (sotto spiegato cosa è).
 
-// Serve una struttura per immagazzinare il colore per ogni Pixel.
-struct Color
-{
-    float R;
-    float G;
-    float B;
-    float A;
-};
 
 Ex04QuadColorDraw::Ex04QuadColorDraw()
 {
@@ -99,6 +92,9 @@ Ex04QuadColorDraw::Ex04QuadColorDraw()
     const GLfloat* BaseColorPtr = reinterpret_cast<GLfloat*> (&BaseColor);
     glUniform4fv(BaseColorLocation, 1, BaseColorPtr);
 
+    // Nel codice sottostante è presente l'utilizzo di SetUniform, nel nostro oggetto wrapper.
+
+
     // I vertici, essendo colorati su una base uniforme grigia che stiamo passando, risultano giustamente sbiaditi.
 
     // ATTENZIONE: Una uniform può anche essere mdoificata più volte durante l'esecuzione del Program. 
@@ -130,16 +126,14 @@ void Ex04QuadColorDraw::Update(float DeltaTime)
     TimedColor.A = 1.f;
 
     // Assegno il valore alla uniform.
-    GLint BaseColorLocation = glGetUniformLocation(Program->GetProgramID(), "base_color");
-    glUniform4fv(BaseColorLocation, 1, reinterpret_cast<GLfloat*> (&TimedColor));
-
+    // Il metodo SetUniform fa parte della nostra classe OGLProgram, che wrappa quindi le relative API di Opengl attraverso degli overload per i vari tipi.
+    Program->SetUniform("base_color", TimedColor);
 
     // Esempio per scrivere dentro l'uniform scale, per agire sulla dimensione dei vertici.
     float scale_speed = 10.0f; // Moltiplicando l'angolo, l'oscillazione del sin/cos aumenta/diminuisce a seconda della moltiplicazione.
     float scale = sinf(ElapsedTime * scale_speed) * 0.5f + 0.5f; // 0% - 100%. Essendo uno scale potrei andare anche oltre il 100% della dimensione originale.
-    glUniform1f(glGetUniformLocation(Program->GetProgramID(), "scale"), scale); // Se lo scale diventasse negativo, i vertici vengono invertiti.
+    Program->SetUniform("scale", scale); // Se lo scale diventasse negativo, i vertici vengono invertiti.
 
 
     glDrawArrays(GL_TRIANGLES, 0, 6); // Prendiamo in considerazione 6 vertici totali, dallo 0.
-
 }

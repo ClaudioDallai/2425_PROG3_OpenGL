@@ -120,14 +120,25 @@ Ex07CubePerspDraw::Ex07CubePerspDraw()
     Program->Bind();
 
 
-    // Texture.
-
     // 5: Creiamo le immagini. 
     // Attenzione che le texture, quando non le usiamo più vanno distrutte.
     BoxTexture = new OGLTexture("resources/textures/wood-box.jpg", true);
 
     // Rendiamo attuale la texture creata.
     BoxTexture->Bind(GL_TEXTURE0);
+
+    // 6: Enable Depth Testing.
+    // Serve lo Z buffer per far funzionare la profondità, va attivato in maniera esplicita.
+    glEnable(GL_DEPTH_TEST);
+
+    // 7: Enable Face Culling.
+    // Anche il face-culling deve essere abilitato in maniera esplicita, 
+    // inoltre è possibile anche specificarne la modalità del cull (quale faccia tagliare).
+    // È possibile anche decidere quale è la front-face secondo vertici orari o antiorari (di default è questa).
+    glEnable(GL_CULL_FACE);
+
+    // glCullFace(GL_BACK); // Default.
+    // glFrontFace(GL_CCW); // Default.
 }
 
 Ex07CubePerspDraw::~Ex07CubePerspDraw()
@@ -141,6 +152,14 @@ Ex07CubePerspDraw::~Ex07CubePerspDraw()
 
 void Ex07CubePerspDraw::Update(float DeltaTime)
 {
-    glClear(GL_COLOR_BUFFER_BIT);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    // Una volta abilitato il depth-buffer, dobbiamo pure pulirlo.
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+    // Rotazione dinamica cubo.
+    static float ElapsedTIme = 0;
+    ElapsedTIme += DeltaTime;
+    Program->SetUniform("angle", 20 * ElapsedTIme);
+
+    // Dobbiamo renderizzare tutti i 36 vertici, non solo la faccia davanti.
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 }

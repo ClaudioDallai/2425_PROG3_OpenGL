@@ -1,4 +1,7 @@
 #include <glad/glad.h>
+#include <glm/glm.hpp>
+#include <vector>
+
 
 class OGLProgram;
 class OGLTexture;
@@ -17,5 +20,10 @@ private:
     GLuint Ebo;
 
     OGLProgram* Program;
-    OGLTexture* BoxTexture;
+    OGLTexture* StormTexture;
+
+    std::vector<float> Vertices;
+
+    glm::mat4 View;
+    glm::mat4 Projection;
 };

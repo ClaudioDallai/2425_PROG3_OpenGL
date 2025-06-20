@@ -117,3 +117,16 @@ void OGLProgram::SetUniform(const std::string& InName, const Color& InValue)
 {
     glUniform4fv(glGetUniformLocation(ProgramId, InName.c_str()), 1, reinterpret_cast<const GLfloat*> (&InValue));
 }
+
+void OGLProgram::SetUniform(const std::string& InName, const glm::mat4& InValue)
+{
+    // Quel GL_FALSE è una operazione opzionale per invertire righe e colonne della matrice. 
+    // Forniamo l'indirizzo del primo elemento della matrice.
+    glUniformMatrix4fv(glGetUniformLocation(ProgramId, InName.c_str()), 1, GL_FALSE, &InValue[0][0]);
+}
+
+void OGLProgram::SetUniform(const std::string& InName, const glm::vec3& InValue)
+{
+    glUniform3fv(glGetUniformLocation(ProgramId, InName.c_str()), 1, &InValue[0]);
+}
+

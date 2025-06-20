@@ -10,6 +10,7 @@
 #include "Ex05QuadTextureDraw.h"
 #include "Ex06QuadPerspDraw.h"
 #include "Ex07CubePerspDraw.h"
+#include "Ex08PhongDraw.h"
 
 #include "obj_parser.h"
 
@@ -32,9 +33,10 @@ int main() {
 	// Ex02QuadDraw Scene;
 	// Ex03QuadIndexDraw Scene;
 	// Ex04QuadColorDraw Scene;
-	Ex05QuadTextureDraw Scene;
+	// Ex05QuadTextureDraw Scene;
 	// Ex06QuadPerspDraw Scene;
 	// Ex07CubePerspDraw Scene;
+	Ex08PhongDraw Scene;
 
 	// Game Loop. 
 	// Valido finchè il contesto della finestra non viene chiuso esplicitamente.

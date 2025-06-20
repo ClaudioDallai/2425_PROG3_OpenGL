@@ -11,6 +11,8 @@
 #include "Ex06QuadPerspDraw.h"
 #include "Ex07CubePerspDraw.h"
 
+#include "obj_parser.h"
+
 
 int main() {
 	std::cout << "It' Working" << std::endl;

@@ -65,7 +65,7 @@ void main()
 
     float factor = (1.f - (smile_texel.a * (1.f - 0.5f)));
     color = mix(smile_texel, box_texel, factor);
-    // frag_color = color;
+    frag_color = color;
 
 
     // La vera risoluzione dell'esercizio, simile come ragionamento al metodo precedente, usa la funzione "Step".
@@ -75,7 +75,7 @@ void main()
     // - nel caso siano uguali, allora viene ritornato 1.
 
     // Quando alpha = 0, allora is_visible = 0. Quando alpha > 0, allora is_visible = 1.
-    float is_visible = step(0.f, smile_texel.a);
+    // float is_visible = step(0.f, smile_texel.a);
     
     // --------------------------------------------------------------- //
 
